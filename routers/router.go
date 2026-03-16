@@ -6,13 +6,40 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func setUpRouter() *mux.Router{
+func setUpRouter() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/categories", handlers.UpdateCategories).Methods("GET")
-	router.HandleFunc("/categories/{id}",handlers.CreateCategories ).Methods("POST")
-		router.HandleFunc("/categories/{id}",handlers.UpdateCategories ).Methods("PUT")
-			router.HandleFunc("/categories/{id}",handlers.DeleteCategories ).Methods("DELETE")
-			
-return router
+	//cat
+
+	router.HandleFunc("/categories", handlers.GetCategories).Methods("GET")
+	router.HandleFunc("/categories/{id}", handlers.CreateCategories).Methods("POST")
+	router.HandleFunc("/categories/{id}", handlers.UpdateCategories).Methods("PUT")
+	router.HandleFunc("/categories/{id}", handlers.DeleteCategories).Methods("DELETE")
+
+	//book
+
+	router.HandleFunc("/books", handlers.GetBooks).Methods("GET")
+	router.HandleFunc("/books/{id}", handlers.CreateBooks).Methods("POST")
+	router.HandleFunc("/books/{id}", handlers.UpdateBooks).Methods("PUT")
+	router.HandleFunc("/books/{id}", handlers.DeleteBooks).Methods("DELETE")
+
+	router.HandleFunc("/loans", handlers.GetLoans).Methods("GET")
+	router.HandleFunc("/loans/{id}", handlers.CreateLoans).Methods("POST")
+	router.HandleFunc("/loans/{id}", handlers.UpdateLoans).Methods("PUT")
+	router.HandleFunc("/loans/{id}", handlers.DeleteLoans).Methods("DELETE")
+
+	//members
+
+	router.HandleFunc("/members", handlers.GetMembers).Methods("GET")
+	router.HandleFunc("/members/{id}", handlers.CreateMembers).Methods("POST")
+	router.HandleFunc("/members/{id}", handlers.UpdateMembers).Methods("PUT")
+	router.HandleFunc("/members/{id}", handlers.DeleteMembers).Methods("DELETE")
+
+	//staff
+
+	router.HandleFunc("/staff", handlers.GetStaff).Methods("GET")
+	router.HandleFunc("/staff/{id}", handlers.CreateStaff).Methods("POST")
+	router.HandleFunc("/staff/{id}", handlers.UpdateStaff).Methods("PUT")
+	router.HandleFunc("/staff/{id}", handlers.DeleteStaff).Methods("DELETE")
+	return router
 }

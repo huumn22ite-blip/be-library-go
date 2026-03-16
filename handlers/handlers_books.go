@@ -44,7 +44,7 @@ func CreateBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := db.DB.Exec(
-		"INSERT INTO categories(title,tatgia,category_id,total_copies,available_copies) VALUES(?,?,?,?,?)",
+		"INSERT INTO books(title,tatgia,category_id,total_copies,available_copies) VALUES(?,?,?,?,?)",
 	
 		b.TITLE,
 		b.TACGIA,
@@ -76,7 +76,7 @@ func DeleteBooks(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 
-	_, err := db.DB.Exec("DELETE FROM categories WHERE id=?", id)
+	_, err := db.DB.Exec("DELETE FROM books WHERE id=?", id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -101,7 +101,7 @@ func UpdateBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.DB.Exec(
-		"UPDATE categories SET ,title=?,tatgia=?,category_id=?,total_copies=?,available_copies=? WHERE id=?",
+		"UPDATE books SET ,title=?,tatgia=?,category_id=?,total_copies=?,available_copies=? WHERE id=?",
 	
 		b.TITLE,
 		b.TACGIA,
