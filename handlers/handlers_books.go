@@ -13,7 +13,7 @@ import (
 
 // get category
 func GetBooks(w http.ResponseWriter, r*http.Request){
-	rows, err := db.DB.Query("SELECT title,tatgia,category_id,total_copies,available_copies  FROM books")
+	rows, err := db.DB.Query("SELECT id,title,tacgia,category_id,total_copies,available_copies  FROM books")
 	if err !=nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 return
@@ -44,7 +44,7 @@ func CreateBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := db.DB.Exec(
-		"INSERT INTO books(title,tatgia,category_id,total_copies,available_copies) VALUES(?,?,?,?,?)",
+		"INSERT INTO books(title,tacgia,category_id,total_copies,available_copies) VALUES(?,?,?,?,?)",
 	
 		b.TITLE,
 		b.TACGIA,
@@ -101,7 +101,7 @@ func UpdateBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.DB.Exec(
-		"UPDATE books SET ,title=?,tatgia=?,category_id=?,total_copies=?,available_copies=? WHERE id=?",
+		"UPDATE books SET ,title=?,tacgia=?,category_id=?,total_copies=?,available_copies=? WHERE id=?",
 	
 		b.TITLE,
 		b.TACGIA,

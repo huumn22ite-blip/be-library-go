@@ -13,7 +13,7 @@ import (
 
 // get category
 func GetCategories(w http.ResponseWriter, r*http.Request){
-	rows, err := db.DB.Query("SELECT name,decscription  FROM categories")
+	rows, err := db.DB.Query("SELECT id,name,description  FROM categories")
 	if err !=nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 return
@@ -22,7 +22,7 @@ return
 	var categories []models.Categories
 	for rows.Next(){
 		var c models.Categories
-		err := rows.Scan(&c.ID, &c.NAME, &c.DECSCIPTION)
+		err := rows.Scan(&c.ID, &c.NAME, &c.DESCIPTION)
 		if err !=nil {
 			http.Error(w,err.Error(),  http.StatusInternalServerError)
 			return
@@ -46,7 +46,7 @@ func CreateCategories(w http.ResponseWriter, r *http.Request) {
 	res, err := db.DB.Exec(
 		"INSERT INTO categories(name,description) VALUES(?,?)",
 		c.NAME,
-		c.DECSCIPTION,
+		c.DESCIPTION,
 	)
 
 	if err != nil {
@@ -98,7 +98,7 @@ func UpdateCategories(w http.ResponseWriter, r *http.Request) {
 		"UPDATE categories SET ,name=?,description=? WHERE id=?",
 		
 		c.NAME,
-		c.DECSCIPTION,
+		c.DESCIPTION,
 		id,
 	)
 

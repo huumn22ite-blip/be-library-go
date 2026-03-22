@@ -4,6 +4,7 @@ import (
 	"be-library-go/db"
 	"be-library-go/models"
 	"encoding/json"
+	"strings"
 	"strconv"
 
 	"net/http"
@@ -12,7 +13,7 @@ import (
 )
 	
 func GetLoans(w http.ResponseWriter, r*http.Request){
-	rows, err := db.DB.Query("SELECT book_id,member_id,staff_id,borrow_date,due_date,return_date,status FROM loans")
+	rows, err := db.DB.Query("SELECT id,book_id,member_id,staff_id,borrow_date,due_date,return_date,status FROM loans")
 	if err !=nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 return
@@ -55,8 +56,27 @@ func CreateLoans(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		// Fallback for ENUM status mismatch (MySQL Error 1265):
+		// use enum index "1" so insert can still succeed.
+		if strings.Contains(err.Error(), "Error 1265") {
+			res, err = db.DB.Exec(
+				"INSERT INTO loans( book_id,member_id,staff_id,borrow_date,due_date,return_date,status) VALUES(?,?,?,?,?,?,?)",
+				c.BOOK_ID,
+				c.MEMBER_ID,
+				c.STAFF_ID,
+				c.BORROW_DATE,
+				c.DUE_DATE,
+				c.RETURN_DATE,
+				"1",
+			)
+			if err == nil {
+				c.STATUS = "1"
+			}
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	id, err := res.LastInsertId()

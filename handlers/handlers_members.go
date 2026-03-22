@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 func GetMembers(w http.ResponseWriter, r*http.Request){
-	rows, err := db.DB.Query("SELECT name,phone,address,membership_date,status,memberscol  FROM members")
+	rows, err := db.DB.Query("SELECT id,name,phone,address,membership_date,status  FROM members")
 	if err !=nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 return
@@ -20,7 +20,7 @@ return
 	var members []models.Members
 	for rows.Next(){
 		var c models.Members
-		err := rows.Scan(&c.ID, &c.NAME, &c.PHONE,&c.ADDRESS, &c.MEMBERSHIP_DATE, &c.STATUS,&c.MEMBERSCOL,)
+		err := rows.Scan(&c.ID, &c.NAME, &c.PHONE,&c.ADDRESS, &c.MEMBERSHIP_DATE, &c.STATUS,)
 		if err !=nil {
 			http.Error(w,err.Error(),  http.StatusInternalServerError)
 			return
@@ -42,13 +42,13 @@ func CreateMembers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := db.DB.Exec(
-		"INSERT INTO members( name,phone,address,membership_date,status,memberscol) VALUES(?,?,?,?,?,?)",
+		"INSERT INTO members( name,phone,address,membership_date,status) VALUES(?,?,?,?,?)",
 		c.NAME,
 		c.PHONE,
 		c.ADDRESS,
 		c.MEMBERSHIP_DATE,
 		c.STATUS,
-		c.MEMBERSCOL,
+		
 	)
 
 	if err != nil {
@@ -97,13 +97,13 @@ func UpdateMembers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.DB.Exec(
-		"UPDATE members SET ,name=?,phone=?,address=?,membership_date=?,status=?,memberscol=? WHERE id=?",	
+		"UPDATE members SET ,name=?,phone=?,address=?,membership_date=?,status=?, WHERE id=?",	
 		c.NAME,
 		c.PHONE,
 		c.ADDRESS,
 		c.MEMBERSHIP_DATE,
 		c.STATUS,
-		c.MEMBERSCOL,
+		
 		id,
 	)
 

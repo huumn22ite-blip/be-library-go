@@ -12,7 +12,7 @@ import (
 )
 
 func GetStaff(w http.ResponseWriter, r*http.Request){
-	rows, err := db.DB.Query("SELECT name,email,phone FROM staff")
+	rows, err := db.DB.Query("SELECT id,name,email,phone FROM staff")
 	if err !=nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 return
@@ -33,39 +33,30 @@ return
 	json.NewEncoder(w).Encode(staff)
 }
 func CreateStaff(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
 
-	var c models.Staff
+    var c models.Staff
+    if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
+        w.WriteHeader(http.StatusBadRequest)
+        json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+        return
+    }
 
-	err := json.NewDecoder(r.Body).Decode(&c)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    res, err := db.DB.Exec(
+        "INSERT INTO staff(name,email,phone) VALUES(?,?,?)",
+        c.NAME, c.EMAIL, c.PHONE,
+    )
+    if err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+        return
+    }
 
-	res, err := db.DB.Exec(
-		"INSERT INTO staff( name,email,phone) VALUES(?,?,?)",
-		c.NAME,
-		c.EMAIL,
-		c.PHONE,
-		
-	)
+    id, _ := res.LastInsertId()
+    c.ID = int(id)
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	id, err := res.LastInsertId()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	c.ID = int(id)
-
-	json.NewEncoder(w).Encode(c)
+    json.NewEncoder(w).Encode(c) // trả JSON thành công
 }
-
 func DeleteStaff(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)

@@ -4,6 +4,6 @@ type Books struct{
 	TITLE string `json:"title"`
 	TACGIA string `json:"tacgia"`
 	CATEGORYID int `json:"category_id"`
-	TOTAL_COPIES string `json:"total_copies"`
-	AVAILABLE_COPIES string `json:"available_copies"`
+	TOTAL_COPIES int `json:"total_copies"`
+	AVAILABLE_COPIES int `json:"available_copies"`
 }

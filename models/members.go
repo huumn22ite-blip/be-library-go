@@ -1,7 +1,7 @@
 package models
 
 import (
-	"time"
+
 
 )
 
@@ -10,7 +10,7 @@ type Members struct {
 	NAME            string `json:"name"`
 	PHONE           string `json:"phone"`
 	ADDRESS         string    `json:"address"`
-	MEMBERSHIP_DATE time.Time   `json:"membership_date"`
+		MEMBERSHIP_DATE string `json:"membership_date"` 
 	STATUS          string `json:"status"`
 	MEMBERSCOL      string `json:"memberscol"`
 }
