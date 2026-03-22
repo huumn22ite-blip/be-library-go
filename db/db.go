@@ -11,7 +11,7 @@ import (
 var DB *sql.DB
 func Connect(){
 	var err error
-DB, err = sql.Open("mysql", os.Getenv("DB_DSN"))
+DB, err = sql.Open("mysql", "root:dgstFAeTojWneuiaOEFsjfKUvVqHTuey@tcp(hopper.proxy.rlwy.net:50741)/library")
 	if err != nil {
 		log.Fatal(err)
 	}
